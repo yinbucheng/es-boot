@@ -26,7 +26,6 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-@Lazy(false)
 public class TableColumnIdAndNameHolder {
 
     private Map<String, IListener> listeners = new HashMap<>(40);

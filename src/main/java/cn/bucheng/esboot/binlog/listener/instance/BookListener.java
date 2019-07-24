@@ -87,7 +87,6 @@ public class BookListener implements IListener {
     public void register() {
         holder.register(DBNAME, TABLENAME, this);
         listener.register(DBNAME, TABLENAME, this);
-        holder.init();
     }
 
     @Override
