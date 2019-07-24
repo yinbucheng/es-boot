@@ -1,5 +1,6 @@
 package cn.bucheng.esboot.binlog.listener.instance;
 
+import cn.bucheng.esboot.binlog.BinLogUtils;
 import cn.bucheng.esboot.binlog.holder.TableBO;
 import cn.bucheng.esboot.binlog.holder.TableColumnIdAndNameHolder;
 import cn.bucheng.esboot.binlog.listener.CompositeListener;
@@ -7,12 +8,16 @@ import cn.bucheng.esboot.binlog.listener.IListener;
 import cn.bucheng.esboot.dao.BookRepository;
 import cn.bucheng.esboot.entity.BookEntity;
 import com.github.shyiko.mysql.binlog.event.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +30,8 @@ import java.util.Map;
  * @version:
  */
 @Component
-@Order(-10)
+@Slf4j
+@Lazy(false)
 public class BookListener implements IListener {
     @Autowired
     private TableColumnIdAndNameHolder holder;
@@ -52,8 +58,7 @@ public class BookListener implements IListener {
                         result.put(name, row[i]);
                     }
 
-                    BookEntity entity = new BookEntity();
-                    BeanUtils.copyProperties(result, entity);
+                    BookEntity entity = BinLogUtils.decode(BookEntity.class, result);
                     bookRepository.save(entity);
                 }
             }
@@ -69,10 +74,12 @@ public class BookListener implements IListener {
         }
     }
 
+    @PostConstruct
     @Override
     public void register() {
         holder.register(DBNAME, TABLENAME, this);
         listener.register(DBNAME, TABLENAME, this);
+        holder.init();
     }
 
     @Override
@@ -85,6 +92,7 @@ public class BookListener implements IListener {
         mappings.put("writer", "writer");
         mappings.put("create_time", "createTime");
         mappings.put("update_time", "updateTime");
-        return null;
+        return mappings;
     }
+
 }

@@ -1,5 +1,12 @@
 package cn.bucheng.esboot.binlog;
 
+
+import org.apache.commons.beanutils.BeanUtils;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author ：yinchong
  * @create ：2019/7/24 19:09
@@ -12,4 +19,22 @@ public class BinLogUtils {
     public static String createKey(String dbName,String tableName){
         return dbName+"-"+tableName;
     }
+
+
+    public static <T> T decode(Class<T> clazz , Map<String,Object> msg){
+        try {
+            T cls = clazz.newInstance();
+            Set<Map.Entry<String, Object>> entrySet = msg.entrySet();
+            for(Map.Entry<String,Object> entry : entrySet){
+                BeanUtils.setProperty(cls,entry.getKey(),entry.getValue());
+            }
+            return cls;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 }

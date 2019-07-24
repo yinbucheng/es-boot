@@ -2,18 +2,20 @@ package cn.bucheng.esboot.binlog.holder;
 
 import cn.bucheng.esboot.binlog.BinLogUtils;
 import cn.bucheng.esboot.binlog.listener.IListener;
-import com.mysql.cj.util.LogUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.lang.annotation.Annotation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author ：yinchong
@@ -23,7 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version:
  */
 @Component
-@Order(-8)
+@Slf4j
+@Lazy(false)
 public class TableColumnIdAndNameHolder {
 
     private Map<String, IListener> listeners = new HashMap<>(40);
@@ -36,47 +39,51 @@ public class TableColumnIdAndNameHolder {
     private JdbcTemplate jdbcTemplate;
 
 
+
     public void register(String dbName, String tableName, IListener listener) {
         listeners.put(BinLogUtils.createKey(dbName, tableName), listener);
     }
 
-    @PostConstruct
+
     public void init() {
-        //完成id到名称初始化
-        jdbcTemplate.query(SQL, new RowMapper<Object>() {
-            @Override
-            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-                int position = rs.getInt("ordinal_position");
-                String tableName = rs.getString("table_name").toLowerCase();
-                String dbName = rs.getString("table_schema").toLowerCase();
-                String columnName = rs.getString("column_name");
-                String key = BinLogUtils.createKey(dbName, tableName);
-                TableBO tableBO = cache.get(key);
-                if (tableBO == null) {
-                    tableBO = new TableBO();
-                    tableBO.setDbName(dbName);
-                    tableBO.setTableName(tableName);
+            log.info("==============begin load column position and name============");
+            //完成id到名称初始化
+            jdbcTemplate.query(SQL, new RowMapper<Object>() {
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    int position = rs.getInt("ordinal_position");
+                    String tableName = rs.getString("table_name").toLowerCase();
+                    String dbName = rs.getString("table_schema").toLowerCase();
+                    String columnName = rs.getString("column_name");
+                    String key = BinLogUtils.createKey(dbName, tableName);
+                    TableBO tableBO = cache.get(key);
+                    if (tableBO == null) {
+                        tableBO = new TableBO();
+                        tableBO.setDbName(dbName);
+                        tableBO.setTableName(tableName);
+                        cache.put(key,tableBO);
+                    }
+                    tableBO.addColumnIdName(position - 1, columnName);
+                    return null;
                 }
-                tableBO.addColumnIdName(position - 1, columnName);
-                return null;
+            });
+            //完成mysql列名到java的映射
+            for (Map.Entry<String, IListener> entry : listeners.entrySet()) {
+                String key = entry.getKey();
+                IListener listener = entry.getValue();
+                TableBO bo = cache.get(key);
+                if (bo != null) {
+                    Map<String, String> datas = listener.mappingColumn();
+                    datas.forEach((k, v) ->
+                            bo.addJaveTypeName(k, v)
+                    );
+                }
             }
-        });
-        //完成mysql列名到java的映射
-        for (Map.Entry<String, IListener> entry : listeners.entrySet()) {
-            String key = entry.getKey();
-            IListener listener = entry.getValue();
-            TableBO bo = cache.get(key);
-            if (bo != null) {
-                Map<String, String> datas = listener.mappingColumn();
-                datas.forEach((k, v) ->
-                        bo.addJaveTypeName(k, v)
-                );
-            }
-        }
     }
 
 
     public TableBO getTableBO(String dbName, String tableName) {
         return cache.get(BinLogUtils.createKey(dbName.toLowerCase(), tableName.toLowerCase()));
     }
+
 }

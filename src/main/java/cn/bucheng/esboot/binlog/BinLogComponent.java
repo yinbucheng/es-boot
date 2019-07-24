@@ -4,12 +4,15 @@ import cn.bucheng.esboot.binlog.listener.CompositeListener;
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 
 /**
  * @author ：yinchong
@@ -20,6 +23,7 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
+@Lazy(false)
 public class BinLogComponent {
 
     private BinaryLogClient client;
@@ -31,6 +35,7 @@ public class BinLogComponent {
 
     @PostConstruct
     public void init() {
+        log.info("==========start binlog client==========");
         Thread thread = new Thread(() -> {
             client = new BinaryLogClient(
                     config.getHost(),
@@ -69,4 +74,5 @@ public class BinLogComponent {
             e.printStackTrace();
         }
     }
+
 }
