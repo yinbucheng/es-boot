@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,13 @@ public class BookListener implements IListener {
                     }
 
                     BookEntity entity = BinLogUtils.decode(BookEntity.class, result);
+                    String content = null;
+                    try {
+                        content = new String((byte[]) result.get("content"), "utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    entity.setContent(content);
                     bookRepository.save(entity);
                 }
             }

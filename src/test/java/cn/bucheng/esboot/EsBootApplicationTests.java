@@ -45,7 +45,7 @@ public class EsBootApplicationTests {
         book.setWriter("尹冲");
         book.setUpdateTime(new Date());
         book.setCreateTime(new Date());
-        book.setId(1L);
+        book.setId(10L);
         BookEntity result = bookRepository.save(book);
         System.out.println(result.getId());
     }
