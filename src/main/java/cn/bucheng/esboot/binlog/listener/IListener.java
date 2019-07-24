@@ -18,11 +18,11 @@ public interface IListener {
     public static final int ADD = 1;
     public static final int UPDATE = 2;
     public static final int DELETE = 3;
-
+    //处理事件
     void onEvent(EventData data, int type);
-
+    //注册监听器
     @PostConstruct
     void register();
-
+    //返回数据库字段和java字段对应关系
     Map<String, String> mappingColumn();
 }

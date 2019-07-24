@@ -36,7 +36,6 @@ public class CompositeListener implements BinaryLogClient.EventListener {
     @Override
     public void onEvent(Event event) {
         EventType eventType = event.getHeader().getEventType();
-        log.info("============event "+event.toString()+"===============");
         if (eventType == EventType.TABLE_MAP) {
             TableMapEventData mapData = (TableMapEventData) event.getData();
             dbName = mapData.getDatabase().toLowerCase();

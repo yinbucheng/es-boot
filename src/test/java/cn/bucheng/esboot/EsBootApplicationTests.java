@@ -2,6 +2,7 @@ package cn.bucheng.esboot;
 
 import cn.bucheng.esboot.dao.BookRepository;
 import cn.bucheng.esboot.entity.BookEntity;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EsBootApplicationTests {
+
+    @BeforeClass
+    public static void beforeClass(){
+        System.setProperty("spring.profiles.active","dev");
+    }
 
     @Autowired
     private BookRepository bookRepository;

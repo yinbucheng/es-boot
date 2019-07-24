@@ -1,5 +1,7 @@
 package cn.bucheng.esboot.binlog;
 
+import cn.bucheng.esboot.binlog.holder.TableColumnIdAndNameHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -10,12 +12,14 @@ import org.springframework.stereotype.Component;
  * @describe
  */
 @Component
+@Slf4j
 public class BinlogRunner implements CommandLineRunner {
     @Autowired
-    private BinLogComponent binLogComponent;
+    private TableColumnIdAndNameHolder holder;
 
     @Override
     public void run(String... args) throws Exception {
-        binLogComponent.init();
+        log.info("===========init schema and table ============");
+        holder.init();
     }
 }
