@@ -1,13 +1,11 @@
 package cn.bucheng.esboot.binlog.listener;
 
 import cn.bucheng.esboot.binlog.BinLogUtils;
-import cn.bucheng.esboot.binlog.holder.TableColumnIdAndNameHolder;
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.event.Event;
 import com.github.shyiko.mysql.binlog.event.EventType;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,8 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Slf4j
 public class CompositeListener implements BinaryLogClient.EventListener {
-    String dbName;
-    String tableName;
+    //这里可以将dbName,tableName设置为成员变量主要和binlog有关，binlog能够保证事务插入的正确性
+   private  String dbName;
+   private  String tableName;
 
 
     private ConcurrentHashMap<String, IListener> listeners = new ConcurrentHashMap<>();
@@ -37,7 +36,7 @@ public class CompositeListener implements BinaryLogClient.EventListener {
     public void onEvent(Event event) {
         EventType eventType = event.getHeader().getEventType();
         if (eventType == EventType.TABLE_MAP) {
-            TableMapEventData mapData = (TableMapEventData) event.getData();
+            TableMapEventData mapData = event.getData();
             dbName = mapData.getDatabase().toLowerCase();
             tableName = mapData.getTable().toLowerCase();
         }
