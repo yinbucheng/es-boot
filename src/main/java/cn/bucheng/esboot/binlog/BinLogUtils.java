@@ -3,7 +3,6 @@ package cn.bucheng.esboot.binlog;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
 
