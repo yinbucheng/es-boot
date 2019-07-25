@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
@@ -60,9 +61,12 @@ public class BookListener implements IListener {
                     BookEntity entity = BinLogUtils.decode(BookEntity.class, result);
                     String content = null;
                     try {
-                        content = new String((byte[]) result.get("content"), "utf-8");
+                        if (!ObjectUtils.isEmpty(result.get("content"))) {
+                            content = new String((byte[]) result.get("content"), "utf-8");
+                        }
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
+                        log.error(e.toString());
                     }
                     entity.setContent(content);
                     bookRepository.save(entity);
@@ -93,9 +97,12 @@ public class BookListener implements IListener {
                 BookEntity entity = BinLogUtils.decode(BookEntity.class, result);
                 String content = null;
                 try {
-                    content = new String((byte[]) result.get("content"), "utf-8");
+                    if (!ObjectUtils.isEmpty(result.get("content"))) {
+                        content = new String((byte[]) result.get("content"), "utf-8");
+                    }
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    log.error(e.toString());
                 }
                 entity.setContent(content);
                 bookRepository.save(entity);
