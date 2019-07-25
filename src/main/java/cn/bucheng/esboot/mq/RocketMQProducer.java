@@ -18,8 +18,6 @@ import javax.annotation.PostConstruct;
 @Component
 @Slf4j
 public class RocketMQProducer {
-    @Value("${rocketmq.nameserver.address}")
-    private String nameserverAddr;
 
     private DefaultMQProducer producer;
 
