@@ -5,6 +5,7 @@ import cn.bucheng.esboot.binlog.dto.TableBO;
 import cn.bucheng.esboot.binlog.holder.TableColumnIdAndNameHolder;
 import cn.bucheng.esboot.binlog.listener.CompositeListener;
 import cn.bucheng.esboot.binlog.listener.IListener;
+import cn.bucheng.esboot.binlog.sender.ISender;
 import cn.bucheng.esboot.dao.BookRepository;
 import cn.bucheng.esboot.entity.BookEntity;
 import com.github.shyiko.mysql.binlog.event.*;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -35,8 +37,8 @@ public class BookListener implements IListener {
     private TableColumnIdAndNameHolder holder;
     @Autowired
     private CompositeListener listener;
-    @Autowired
-    private BookRepository bookRepository;
+    @Resource(name = "rocketMQSender")
+    private ISender sender;
 
     private final String DBNAME = "ad_test";
     private final String TABLENAME = "ad_book";
@@ -65,7 +67,7 @@ public class BookListener implements IListener {
                         e.printStackTrace();
                     }
                     entity.setContent(content);
-                    bookRepository.save(entity);
+                    sender.send(entity);
                 }
             }
         } else if (type == IListener.DELETE) { //处理删除事件
@@ -73,7 +75,7 @@ public class BookListener implements IListener {
             List<Serializable[]> rows = deleteData.getRows();
             if (rows != null) {
                 for (Serializable[] row : rows) {
-                    bookRepository.deleteById((Long) row[0]);
+                    sender.delete(row[0]);
                 }
             }
 
@@ -98,7 +100,7 @@ public class BookListener implements IListener {
                     e.printStackTrace();
                 }
                 entity.setContent(content);
-                bookRepository.save(entity);
+                sender.send(entity);
             }
         }
     }

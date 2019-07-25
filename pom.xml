@@ -42,6 +42,12 @@
             <version>${elasticsearch.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.5.1</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
