@@ -75,7 +75,7 @@ public class BookListener implements IListener {
             List<Serializable[]> rows = deleteData.getRows();
             if (rows != null) {
                 for (Serializable[] row : rows) {
-                    sender.delete(row[0]);
+                    sender.send(row[0]);
                 }
             }
 
