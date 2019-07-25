@@ -1,17 +1,14 @@
 package cn.bucheng.esboot.binlog.holder;
 
 import cn.bucheng.esboot.binlog.BinLogUtils;
+import cn.bucheng.esboot.binlog.dto.TableBO;
 import cn.bucheng.esboot.binlog.listener.IListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.lang.annotation.Annotation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;

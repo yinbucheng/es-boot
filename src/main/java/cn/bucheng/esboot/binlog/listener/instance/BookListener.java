@@ -1,7 +1,7 @@
 package cn.bucheng.esboot.binlog.listener.instance;
 
 import cn.bucheng.esboot.binlog.BinLogUtils;
-import cn.bucheng.esboot.binlog.holder.TableBO;
+import cn.bucheng.esboot.binlog.dto.TableBO;
 import cn.bucheng.esboot.binlog.holder.TableColumnIdAndNameHolder;
 import cn.bucheng.esboot.binlog.listener.CompositeListener;
 import cn.bucheng.esboot.binlog.listener.IListener;
@@ -9,16 +9,13 @@ import cn.bucheng.esboot.dao.BookRepository;
 import cn.bucheng.esboot.entity.BookEntity;
 import com.github.shyiko.mysql.binlog.event.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +44,7 @@ public class BookListener implements IListener {
     @SuppressWarnings("all")
     @Override
     public void onEvent(EventData data, int type) {
-        //处理添加事件
-        if (type == IListener.ADD) {
+        if (type == IListener.ADD) {//处理添加事件
             WriteRowsEventData addEvent = (WriteRowsEventData) data;
             List<Serializable[]> rows = addEvent.getRows();
             if (rows != null) {

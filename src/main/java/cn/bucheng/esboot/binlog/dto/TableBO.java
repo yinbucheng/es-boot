@@ -1,4 +1,4 @@
-package cn.bucheng.esboot.binlog.holder;
+package cn.bucheng.esboot.binlog.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +20,9 @@ import java.util.Map;
 public class TableBO {
     private String dbName;
     private String tableName;
+    //数据的下标和列名对应关系
     private Map<Integer, String> columnIdNameMaps = new HashMap<>(30);
+    //数库的列名和java的字段名称对应关系
     private Map<String, String> columnTypeNameMaps = new HashMap<>(30);
 
 
