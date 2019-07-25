@@ -40,7 +40,7 @@ public class RocketMQBookDelConsumer {
     @SuppressWarnings("all")
     @PostConstruct
     public void init() {
-        consumer = new DefaultMQPushConsumer("binlog-es-consumer");
+        consumer = new DefaultMQPushConsumer("binlog-es-delete-consumer");
         consumer.setNamesrvAddr(nameAddr);
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         consumer.setConsumeMessageBatchMaxSize(1);

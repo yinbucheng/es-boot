@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author ：yinchong
@@ -62,7 +63,9 @@ public class BookListener implements IListener {
                     BookEntity entity = BinLogUtils.decode(BookEntity.class, result);
                     String content = null;
                     try {
-                        content = new String((byte[]) result.get("content"), "utf-8");
+                        if (!Objects.isNull(result.get("content"))) {
+                            content = new String((byte[]) result.get("content"), "utf-8");
+                        }
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -95,7 +98,9 @@ public class BookListener implements IListener {
                 BookEntity entity = BinLogUtils.decode(BookEntity.class, result);
                 String content = null;
                 try {
-                    content = new String((byte[]) result.get("content"), "utf-8");
+                    if (!Objects.isNull(result.get("content"))) {
+                        content = new String((byte[]) result.get("content"), "utf-8");
+                    }
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

@@ -23,6 +23,7 @@ public class EsBootApplicationTests {
     @BeforeClass
     public static void beforeClass(){
         System.setProperty("spring.profiles.active","dev");
+        System.setProperty("es.set.netty.runtime.available.processors","false");
     }
 
     @Autowired
