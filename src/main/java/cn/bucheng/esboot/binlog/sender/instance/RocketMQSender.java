@@ -35,7 +35,15 @@ public class RocketMQSender implements ISender {
     private String deleteTopicName;
 
     @Override
-    public <T> void send(T t) {
+    public void send(Object t) {
+        if (t instanceof Long) {
+            delete((Long) t);
+        } else {
+            mergeSend(t);
+        }
+    }
+
+    private void mergeSend(Object t) {
         String s = JSON.toJSONString(t);
         Message message = new Message(mergeTopicName, s.getBytes());
         try {
@@ -62,10 +70,9 @@ public class RocketMQSender implements ISender {
             e.printStackTrace();
             log.error("send merge message fail,cause:" + e);
         }
-
     }
 
-    @Override
+
     public void delete(Serializable id) {
         String s = id + "";
         Message message = new Message(deleteTopicName, s.getBytes());

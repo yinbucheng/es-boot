@@ -52,6 +52,7 @@ public class RocketMQBookMergerConsumer {
                     String content = new String(message.getBody());
                     BookEntity entity = JSON.parseObject(content, BookEntity.class);
                     bookRepository.save(entity);
+                    log.info("accpet merge message content:" + content);
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 } catch (Exception e) {
                     log.error(e.toString());

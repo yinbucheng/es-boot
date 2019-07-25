@@ -51,6 +51,7 @@ public class RocketMQBookDelConsumer {
                     MessageExt message = list.get(0);
                     String content = new String(message.getBody());
                     Long id = Long.parseLong(content);
+                    log.info("accept delete message id:" + id);
                     bookRepository.deleteById(id);
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 } catch (Exception e) {

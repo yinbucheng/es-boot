@@ -11,7 +11,5 @@ import java.io.Serializable;
  */
 public interface ISender {
 
-    <T> void send(T t);
-
-    void delete(Serializable id);
+     void send(Object t);
 }
