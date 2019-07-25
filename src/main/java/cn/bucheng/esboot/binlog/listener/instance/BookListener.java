@@ -44,8 +44,10 @@ public class BookListener implements IListener {
     private final String DBNAME = "ad_test";
     private final String TABLENAME = "ad_book";
 
+    @SuppressWarnings("all")
     @Override
     public void onEvent(EventData data, int type) {
+        //处理添加事件
         if (type == IListener.ADD) {
             WriteRowsEventData addEvent = (WriteRowsEventData) data;
             List<Serializable[]> rows = addEvent.getRows();
@@ -70,7 +72,7 @@ public class BookListener implements IListener {
                     bookRepository.save(entity);
                 }
             }
-        } else if (type == IListener.DELETE) {
+        } else if (type == IListener.DELETE) { //处理删除事件
             DeleteRowsEventData deleteData = (DeleteRowsEventData) data;
             List<Serializable[]> rows = deleteData.getRows();
             if (rows != null) {
@@ -79,6 +81,29 @@ public class BookListener implements IListener {
                 }
             }
 
+        } else if (type == IListener.UPDATE) {//处理更新事件
+            UpdateRowsEventData updateData = (UpdateRowsEventData) data;
+            List<Map.Entry<Serializable[], Serializable[]>> rows = updateData.getRows();
+            for (Map.Entry<Serializable[], Serializable[]> row : rows) {
+                Serializable[] value = row.getValue();
+                int length = value.length;
+                Map<String, Object> result = new HashMap<>();
+                for (int i = 0; i < length; i++) {
+                    TableBO tableBO = holder.getTableBO(DBNAME, TABLENAME);
+                    String name = tableBO.getJavaName(i);
+                    result.put(name, value[i]);
+                }
+
+                BookEntity entity = BinLogUtils.decode(BookEntity.class, result);
+                String content = null;
+                try {
+                    content = new String((byte[]) result.get("content"), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                entity.setContent(content);
+                bookRepository.save(entity);
+            }
         }
     }
 
