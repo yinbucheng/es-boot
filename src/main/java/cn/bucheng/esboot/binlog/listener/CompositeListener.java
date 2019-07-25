@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author ：yinchong
  * @create ：2019/7/24 19:01
- * @description：
+ * @description：组合监听器，会将事件转发到感兴趣的监听器上面去
  * @modified By：
  * @version:
  */
