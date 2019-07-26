@@ -45,8 +45,8 @@ public class RocketMQBookDelConsumer {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
+                MessageExt message = list.get(0);
                 try {
-                    MessageExt message = list.get(0);
                     String content = new String(message.getBody());
                     Long id = Long.parseLong(content);
                     log.info("accept delete message id:" + id);
@@ -54,6 +54,11 @@ public class RocketMQBookDelConsumer {
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 } catch (Exception e) {
                     log.error(e.toString());
+                    int number = message.getReconsumeTimes();
+                    if (number > 4) {
+                        log.error("消费 " + message.getMsgId() + " 失败，已经重试了:" + number);
+                        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+                    }
                     return ConsumeConcurrentlyStatus.RECONSUME_LATER;
                 }
             }

@@ -47,15 +47,20 @@ public class RocketMQBookMergerConsumer {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
+                MessageExt message = list.get(0);
                 try {
-                    MessageExt message = list.get(0);
                     String content = new String(message.getBody());
                     BookEntity entity = JSON.parseObject(content, BookEntity.class);
-                    bookRepository.save(entity);
+                     bookRepository.save(entity);
                     log.info("accpet merge message content:" + content);
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 } catch (Exception e) {
                     log.error(e.toString());
+                    int number = message.getReconsumeTimes();
+                    if(number>4){
+                        log.error("消费 "+message.getMsgId()+" 失败，已经重试了:"+number);
+                        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+                    }
                     return ConsumeConcurrentlyStatus.RECONSUME_LATER;
                 }
             }
