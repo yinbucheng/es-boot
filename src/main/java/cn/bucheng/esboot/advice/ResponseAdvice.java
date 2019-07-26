@@ -1,7 +1,7 @@
 package cn.bucheng.esboot.advice;
 
 import cn.bucheng.esboot.annotation.IgnoreAdvice;
-import cn.bucheng.esboot.common.ServerModel;
+import cn.bucheng.esboot.model.vo.ServerModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

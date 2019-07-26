@@ -1,4 +1,4 @@
-package cn.bucheng.esboot.entity;
+package cn.bucheng.esboot.model.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;

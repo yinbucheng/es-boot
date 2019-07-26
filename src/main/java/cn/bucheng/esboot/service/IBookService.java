@@ -1,6 +1,6 @@
 package cn.bucheng.esboot.service;
 
-import cn.bucheng.esboot.entity.BookEntity;
+import cn.bucheng.esboot.model.entity.BookEntity;
 import com.baomidou.mybatisplus.service.IService;
 
 /**

@@ -1,8 +1,6 @@
 package cn.bucheng.esboot.mq;
 
 import cn.bucheng.esboot.dao.BookRepository;
-import cn.bucheng.esboot.entity.BookEntity;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;

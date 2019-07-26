@@ -1,6 +1,6 @@
 package cn.bucheng.esboot.dao;
 
-import cn.bucheng.esboot.entity.BookEntity;
+import cn.bucheng.esboot.model.entity.BookEntity;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;

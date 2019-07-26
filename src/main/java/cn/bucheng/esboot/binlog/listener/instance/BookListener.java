@@ -6,12 +6,10 @@ import cn.bucheng.esboot.binlog.holder.TableColumnIdAndNameHolder;
 import cn.bucheng.esboot.binlog.listener.CompositeListener;
 import cn.bucheng.esboot.binlog.listener.IListener;
 import cn.bucheng.esboot.binlog.sender.ISender;
-import cn.bucheng.esboot.dao.BookRepository;
-import cn.bucheng.esboot.entity.BookEntity;
+import cn.bucheng.esboot.model.entity.BookEntity;
 import com.github.shyiko.mysql.binlog.event.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 

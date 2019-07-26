@@ -1,4 +1,4 @@
-package cn.bucheng.esboot.common;
+package cn.bucheng.esboot.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
