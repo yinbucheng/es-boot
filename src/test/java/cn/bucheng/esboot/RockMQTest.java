@@ -62,10 +62,7 @@ public class RockMQTest {
                     String msgId = msg.getMsgId();
                     String tag = msg.getTags();
                     String content = new String(msg.getBody());
-                    if (key.equals("key1")) {
-                        int i = 1 / 0;
-                    }
-                    log.info(key + " " + msgId + " " + tag + " " + content);
+                    log.info(key + " " + msgId + " " + tag + " " + content+" "+msg.getQueueId());
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 } catch (Exception e) {
                     int time = msg.getReconsumeTimes();
@@ -86,7 +83,7 @@ public class RockMQTest {
 
 
     @Test
-    public void testBroadCasetConsumer() throws MQClientException, InterruptedException {
+    public void testBroadCastConsumer() throws MQClientException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("test-consumer");
         consumer.setNamesrvAddr("127.0.0.1:9876");
