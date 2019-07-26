@@ -8,9 +8,13 @@ import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.MessageQueueSelector;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.junit.Test;
@@ -119,5 +123,31 @@ public class RockMQTest {
 
         consumer.start();
         countDownLatch.await();
+    }
+
+
+
+    @Test
+    public void testAssignTopicQueue() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
+        DefaultMQProducer producer = new DefaultMQProducer("test-topic-queue");
+        producer.setNamesrvAddr("127.0.0.1:9876");
+        producer.start();
+        MessageQueueSelector selector = new MessageQueueSelector() {
+            @Override
+            public MessageQueue select(List<MessageQueue> list, Message message, Object arg) {
+                return list.get((Integer)arg);
+            }
+        };
+
+        producer.setRetryTimesWhenSendFailed(3);
+        for(int i=0;i<10;i++) {
+            Message message = new Message("test-topic", "hello word".getBytes());
+            SendResult send = producer.send(message, selector, 1);
+            if(send.getSendStatus()== SendStatus.SEND_OK){
+                log.info("send ok");
+            }
+        }
+
+        producer.shutdown();
     }
 }
