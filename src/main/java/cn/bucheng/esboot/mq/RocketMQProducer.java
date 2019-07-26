@@ -26,6 +26,7 @@ public class RocketMQProducer {
     @PostConstruct
     public void init() {
         producer = new DefaultMQProducer("default-rocketmq-producer");
+        producer.setNamesrvAddr(nameserverAddr);
         producer.setRetryTimesWhenSendAsyncFailed(3);
         try {
             producer.start();
