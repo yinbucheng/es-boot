@@ -33,20 +33,20 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Object handleError(HttpServletRequest req, HttpServletResponse resp, Object error) {
         log.error(error.toString());
-        if (error instanceof BusinessException) {
+        if (error instanceof BusinessException) {//这里表示普通的业务错误拦截
             BusinessException bus = (BusinessException) error;
             return ServerModel.fail(bus.getCode(), bus.getMessage());
-        } else if (error instanceof ServletRequestBindingException) {
+        } else if (error instanceof ServletRequestBindingException) {//请求绑定异常
             return ServerModel.fail(BusinessError.BIND_PARAM_FAIL.getCode(), BusinessError.BIND_PARAM_FAIL.getMessage());
-        } else if (error instanceof NoHandlerFoundException) {
+        } else if (error instanceof NoHandlerFoundException) {//url地址无法找到问题
             return ServerModel.fail(BusinessError.NO_FIND_ROUTING.getCode(), BusinessError.NO_FIND_ROUTING.getMessage());
         } else if (error instanceof BindException) {//post的非json校验失败会进入到这里
             BindException err = (BindException) error;
             return ServerModel.fail(BusinessError.PARAM_VERIFY_FAIL.getCode(), BusinessError.PARAM_VERIFY_FAIL.getMessage() + ":" + errorMessage(err.getBindingResult()));
-        } else if(error instanceof MethodArgumentNotValidException){//post的json校验失败会进入到这里
-            MethodArgumentNotValidException err = (MethodArgumentNotValidException)error;
+        } else if (error instanceof MethodArgumentNotValidException) {//post的json校验失败会进入到这里
+            MethodArgumentNotValidException err = (MethodArgumentNotValidException) error;
             return ServerModel.fail(BusinessError.PARAM_VERIFY_FAIL.getCode(), BusinessError.PARAM_VERIFY_FAIL.getMessage() + ":" + errorMessage(err.getBindingResult()));
-        }else {
+        } else {
             return ServerModel.error("服务器异常", error.toString());
         }
     }
