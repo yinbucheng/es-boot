@@ -11,6 +11,7 @@ import cn.bucheng.esboot.entity.BookEntity;
 import com.github.shyiko.mysql.binlog.event.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +41,7 @@ public class BookListener implements IListener {
     private CompositeListener listener;
     @Resource(name = "rocketMQSender")
     private ISender sender;
+
 
     private final String DBNAME = "ad_test";
     private final String TABLENAME = "ad_book";
