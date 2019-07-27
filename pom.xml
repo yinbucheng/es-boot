@@ -80,10 +80,15 @@
         </dependency>
 
 
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.shyiko</groupId>-->
+        <!--            <artifactId>mysql-binlog-connector-java</artifactId>-->
+        <!--            <version>0.20.1</version>-->
+        <!--        </dependency>-->
         <dependency>
-            <groupId>com.github.shyiko</groupId>
-            <artifactId>mysql-binlog-connector-java</artifactId>
-            <version>0.20.1</version>
+            <groupId>cn.bucheng</groupId>
+            <artifactId>spring-boot-starter-mysql-binlog</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
