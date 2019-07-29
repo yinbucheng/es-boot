@@ -65,7 +65,7 @@ public class ESController {
      */
     @RequestMapping("queryOr")
     public List<BookEntity> queryOrLike(String param) {
-        QueryBuilder builder = QueryBuilders.fuzzyQuery("content", param);
+        QueryBuilder builder = QueryBuilders.matchPhraseQuery("content", param);
 //                .should(QueryBuilders.fuzzyQuery("name", param))
 //                .should(QueryBuilders.fuzzyQuery("title", param))
 //                .should(QueryBuilders.wildcardQuery("content", param+"*"))
