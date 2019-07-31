@@ -1,4 +1,4 @@
-package cn.bucheng.esboot.binlog;
+package cn.bucheng.esboot.binlog.book;
 
 import cn.bucheng.esboot.entity.BookEntity;
 import cn.bucheng.mysql.listener.IListener;
