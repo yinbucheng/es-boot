@@ -10,6 +10,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 public class EsBootApplication {
 
     public static void main(String[] args) {
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
         SpringApplication.run(EsBootApplication.class, args);
     }
 

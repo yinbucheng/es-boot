@@ -3,10 +3,12 @@ package cn.bucheng.esboot.binlog.global;
 import cn.bucheng.esboot.entity.BinLogPO;
 import cn.bucheng.esboot.mapper.BinLogMapper;
 import cn.bucheng.mysql.binlog.BinLogConfig;
+import cn.bucheng.mysql.callback.BinLogConfigHook;
 import cn.bucheng.mysql.callback.BinlogConfigCallback;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,20 +20,19 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class GlobalConfigHandle implements BinlogConfigCallback {
+public class GlobalConfigHandle implements BinLogConfigHook {
     @Autowired
-    private BinLogMapper mapper;
+    private RedisTemplate redisTemplate;
 
 
     @Override
-    public void configCallback(BinLogConfig config) {
-        BinLogPO binLogPO = mapper.selectById(1L);
-        String fileName = binLogPO.getFileName();
-        Long position = binLogPO.getPosition();
-        if (!Strings.isBlank(fileName)) {
-            log.info("begin load file:{} ,position:{}", fileName, position);
-            config.setFile(fileName);
-            config.setPosition(position);
+    public void configReset(BinLogConfig config) {
+        Object filename = redisTemplate.opsForHash().get("es-boot-binLog", "filename");
+        Object position = redisTemplate.opsForHash().get("es-boot-binLog", "position");
+        if (filename != null && !filename.equals("")) {
+            log.info("begin load filename:{}, position:{}", filename, position);
+            config.setFile(filename + "");
+            config.setPosition(Long.parseLong(position + ""));
         }
     }
 }
