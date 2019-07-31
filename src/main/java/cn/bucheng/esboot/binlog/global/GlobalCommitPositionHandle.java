@@ -23,11 +23,12 @@ import java.util.Date;
 @Slf4j
 public class GlobalCommitPositionHandle implements BinLogCommitPosition {
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
 
     @Override
     public void commitBinLogPosition(long position) {
-       redisTemplate.opsForHash().put("es-boot-binLog","position",position);
+        log.info("update position to redis position:{}", position);
+        redisTemplate.opsForHash().put("es-boot-binLog", "position", position + "");
     }
 }

@@ -21,12 +21,15 @@ import java.util.Date;
 @Slf4j
 public class GlobalBinLogFileHandle implements IBinLogFileListener {
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public void handleBinLogFile(String fileName, long position) {
-        log.info(" save fileName:{} position:{} to redis", fileName, position);
+        Object filename = redisTemplate.opsForHash().get("es-boot-binLog", "filename");
         redisTemplate.opsForHash().put("es-boot-binLog", "filename", fileName);
-        redisTemplate.opsForHash().put("es-boot-binlog", "position", position);
+        if (filename == null || !fileName.equals(filename + "")) {
+            redisTemplate.opsForHash().put("es-boot-binLog", "position", position + "");
+            log.info(" save fileName:{} position:{} to redis", fileName, position);
+        }
     }
 }

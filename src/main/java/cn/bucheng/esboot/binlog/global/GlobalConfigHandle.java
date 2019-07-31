@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GlobalConfigHandle implements BinLogConfigHook {
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
 
     @Override
@@ -32,7 +32,11 @@ public class GlobalConfigHandle implements BinLogConfigHook {
         if (filename != null && !filename.equals("")) {
             log.info("begin load filename:{}, position:{}", filename, position);
             config.setFile(filename + "");
-            config.setPosition(Long.parseLong(position + ""));
+            if (position != null && !"".equals(position + "")) {
+                config.setPosition(Long.parseLong(position + ""));
+            } else {
+                config.setPosition(0L);
+            }
         }
     }
 }
