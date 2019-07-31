@@ -21,11 +21,8 @@ public class GlobalBinLogFileHandle implements IBinLogFileListener {
 
     @Override
     public void handleBinLogFile(String fileName, long position) {
-        Object filename = redisTemplate.opsForHash().get("es-boot-binLog", "filename");
         redisTemplate.opsForHash().put("es-boot-binLog", "filename", fileName);
-        if (!fileName.equals(filename + "")) {
-            redisTemplate.opsForHash().put("es-boot-binLog", "position", position + "");
-            log.info(" save fileName:{} position:{} to redis", fileName, position);
-        }
+        redisTemplate.opsForHash().put("es-boot-binLog", "position", position + "");
+        log.info("save binLogFile:{} position:{}",fileName,position);
     }
 }

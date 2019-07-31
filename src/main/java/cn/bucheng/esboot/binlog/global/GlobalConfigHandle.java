@@ -25,14 +25,10 @@ public class GlobalConfigHandle implements BinLogConfigHook {
     public void configReset(BinLogConfig config) {
         Object filename = redisTemplate.opsForHash().get("es-boot-binLog", "filename");
         Object position = redisTemplate.opsForHash().get("es-boot-binLog", "position");
-        if (filename != null && !filename.equals("")) {
+        if (filename != null && !filename.equals("") && position != null && !"".equals(position + "")) {
             log.info("begin load filename:{}, position:{}", filename, position);
             config.setFile(filename + "");
-            if (position != null && !"".equals(position + "")) {
-                config.setPosition(Long.parseLong(position + ""));
-            } else {
-                config.setPosition(0L);
-            }
+            config.setPosition(Long.parseLong(position + ""));
         }
     }
 }
