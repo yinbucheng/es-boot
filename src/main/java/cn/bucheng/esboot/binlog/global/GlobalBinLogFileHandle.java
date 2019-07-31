@@ -23,7 +23,7 @@ public class GlobalBinLogFileHandle implements IBinLogFileListener {
     public void handleBinLogFile(String fileName, long position) {
         Object filename = redisTemplate.opsForHash().get("es-boot-binLog", "filename");
         redisTemplate.opsForHash().put("es-boot-binLog", "filename", fileName);
-        if (filename == null || !fileName.equals(filename + "")) {
+        if (!fileName.equals(filename + "")) {
             redisTemplate.opsForHash().put("es-boot-binLog", "position", position + "");
             log.info(" save fileName:{} position:{} to redis", fileName, position);
         }
