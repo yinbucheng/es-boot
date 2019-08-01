@@ -2,6 +2,7 @@ package cn.bucheng.esboot.binlog.global;
 
 import cn.bucheng.mysql.binlog.BinLogConfig;
 import cn.bucheng.mysql.callback.BinLogConfigHook;
+import cn.bucheng.mysql.constant.BinLogConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,8 +24,8 @@ public class GlobalConfigHandle implements BinLogConfigHook {
 
     @Override
     public void configReset(BinLogConfig config) {
-        Object filename = redisTemplate.opsForHash().get("es-boot-binLog", "filename");
-        Object position = redisTemplate.opsForHash().get("es-boot-binLog", "position");
+        Object filename = redisTemplate.opsForHash().get(BinLogConstant.BINLOG_PREFIX + "es", BinLogConstant.BINLOG_FILE);
+        Object position = redisTemplate.opsForHash().get(BinLogConstant.BINLOG_PREFIX + "es", BinLogConstant.BINLOG_POSITION);
         if (filename != null && !filename.equals("") && position != null && !"".equals(position + "")) {
             log.info("begin load filename:{}, position:{}", filename, position);
             config.setFile(filename + "");
