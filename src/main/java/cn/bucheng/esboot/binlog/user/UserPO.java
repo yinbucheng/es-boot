@@ -21,14 +21,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@TableName(schema = "ad_test",table = "ad_user")
+@TableName(schema = "ad_test", table = "ad_user")
 public class UserPO implements Serializable {
     private Long id;
     private String name;
     private Integer age;
     private String gender;
-    @ColumnName(sqlColumn = "create_time")
     private Date createTime;
-    @ColumnName(sqlColumn = "update_time")
     private Date updateTime;
 }
