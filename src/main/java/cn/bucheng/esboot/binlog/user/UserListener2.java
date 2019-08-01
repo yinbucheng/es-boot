@@ -8,14 +8,14 @@ import java.io.Serializable;
 
 /**
  * @author ：yinchong
- * @create ：2019/8/1 9:35
+ * @create ：2019/8/1 9:55
  * @description：
  * @modified By：
  * @version:
  */
 @Component
 @Slf4j
-public class UserListener implements IListener<UserPO> {
+public class UserListener2 implements IListener<UserPO> {
     @Override
     public Class getClassType() {
         return UserPO.class;
@@ -23,16 +23,16 @@ public class UserListener implements IListener<UserPO> {
 
     @Override
     public void saveEvent(UserPO data) {
-        log.info("save user event1,content:{}", data);
+        log.info("save user event2,content:{}", data);
     }
 
     @Override
     public void updateEvent(UserPO data) {
-        log.info("update user event1,content:{}", data);
+        log.info("update user event2,content:{}", data);
     }
 
     @Override
     public void deleteEvent(Serializable id) {
-        log.info("delete user event1,id:{}", id);
+        log.info("delete user event2,id:{}", id);
     }
 }
