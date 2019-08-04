@@ -83,7 +83,7 @@
         <dependency>
             <groupId>cn.bucheng</groupId>
             <artifactId>spring-boot-starter-mysql-binlog</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
