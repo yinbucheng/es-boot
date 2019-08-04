@@ -1,0 +1,8 @@
+DEBUG|2019-07-26 12:27:53.286|[main]|o.s.b.StartupInfoLogger.logStarting.  53|Running with Spring Boot v2.1.6.RELEASE, Spring v5.1.8.RELEASE
+DEBUG|2019-07-26 12:36:09.268|[http-nio-9090-exec-1]|o.a.i.l.j.BaseJdbcLogger.debug. 159|==>  Preparing: INSERT INTO ad_book ( `name`, title, writer, create_time, update_time, content ) VALUES ( ?, ?, ?, ?, ?, ? ) 
+DEBUG|2019-07-26 12:36:09.331|[http-nio-9090-exec-1]|o.a.i.l.j.BaseJdbcLogger.debug. 159|==> Parameters: test(String), this is test(String), yinchong(String), 2019-07-26 12:36:09.207(Timestamp), 2019-07-26 12:36:09.207(Timestamp), hahahaha(String)
+DEBUG|2019-07-26 12:36:09.340|[http-nio-9090-exec-1]|o.a.i.l.j.BaseJdbcLogger.debug. 159|<==    Updates: 1
+DEBUG|2019-07-26 12:39:17.200|[http-nio-9090-exec-3]|o.a.i.l.j.BaseJdbcLogger.debug. 159|==>  Preparing: INSERT INTO ad_book ( `name`, title, writer, create_time, update_time, content ) VALUES ( ?, ?, ?, ?, ?, ? ) 
+DEBUG|2019-07-26 12:39:17.201|[http-nio-9090-exec-3]|o.a.i.l.j.BaseJdbcLogger.debug. 159|==> Parameters: test(String), this is test(String), yinchong(String), 2019-07-26 12:39:17.194(Timestamp), 2019-07-26 12:39:17.194(Timestamp), hahahaha wo yao chen gong(String)
+DEBUG|2019-07-26 12:39:17.208|[http-nio-9090-exec-3]|o.a.i.l.j.BaseJdbcLogger.debug. 159|<==    Updates: 1
+DEBUG|2019-07-26 12:40:05.413|[main]|o.s.b.StartupInfoLogger.logStarting.  53|Running with Spring Boot v2.1.6.RELEASE, Spring v5.1.8.RELEASE
